@@ -10,41 +10,19 @@
   <input id="mobile" placeholder="Enter Mobile Number" />
   <button onclick="searchCustomer()">Search</button>
 
-  <div id="result" style="margin-top: 20px;"></div>
-
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/voltmoney.in/s/AKfycbzCaLi4ZzKiE9w7sscUpAe29Uq8aeqkW8P2zPMIXCAsjByE8jkBf5gxoqi7gukxd8Xv5w/exec";
 
-    async function searchCustomer() {
+    function searchCustomer() {
       const mobile = document.getElementById("mobile").value.trim();
-      const resultDiv = document.getElementById("result");
 
-      resultDiv.innerHTML = "Loading...";
-
-      try {
-        const response = await fetch(`${SCRIPT_URL}?mobile=${encodeURIComponent(mobile)}`);
-        const text = await response.text();
-
-        resultDiv.innerHTML = `
-          <p><strong>Raw response:</strong></p>
-          <pre>${text}</pre>
-        `;
-
-        const data = JSON.parse(text);
-
-        if (data.found) {
-          resultDiv.innerHTML += `
-            <hr />
-            <p><strong>Mobile:</strong> ${data.mobile}</p>
-            <p><strong>Name:</strong> ${data.account_holder_name}</p>
-            <p><strong>Shortfall Amount:</strong> ${data.shortfall_amount}</p>
-          `;
-        } else {
-          resultDiv.innerHTML += `<p>Customer not found</p>`;
-        }
-      } catch (error) {
-        resultDiv.innerHTML = `Error: ${error.message}`;
+      if (!mobile) {
+        alert("Please enter mobile number");
+        return;
       }
+
+      const url = `${SCRIPT_URL}?mobile=${encodeURIComponent(mobile)}`;
+      window.open(url, "_blank");
     }
   </script>
 </body>
