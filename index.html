@@ -23,20 +23,27 @@
 
       try {
         const response = await fetch(`${SCRIPT_URL}?mobile=${encodeURIComponent(mobile)}`);
-        const data = await response.json();
+        const text = await response.text();
+
+        resultDiv.innerHTML = `
+          <p><strong>Raw response:</strong></p>
+          <pre>${text}</pre>
+        `;
+
+        const data = JSON.parse(text);
 
         if (data.found) {
-          resultDiv.innerHTML = `
+          resultDiv.innerHTML += `
+            <hr />
             <p><strong>Mobile:</strong> ${data.mobile}</p>
             <p><strong>Name:</strong> ${data.account_holder_name}</p>
             <p><strong>Shortfall Amount:</strong> ${data.shortfall_amount}</p>
           `;
         } else {
-          resultDiv.innerHTML = "Customer not found";
+          resultDiv.innerHTML += `<p>Customer not found</p>`;
         }
       } catch (error) {
-        console.error(error);
-        resultDiv.innerHTML = "Error fetching customer details";
+        resultDiv.innerHTML = `Error: ${error.message}`;
       }
     }
   </script>
