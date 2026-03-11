@@ -1,67 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Customer Investigation Tool</title>
+  <title>Customer Investigation Tool</title>
 </head>
+<body style="font-family: Arial; padding: 20px;">
+  <h2>Customer Investigation Tool</h2>
 
-<body>
+  <input id="mobile" placeholder="Enter Mobile Number" />
+  <button onclick="searchCustomer()">Search</button>
 
-<h2>Customer Investigation Tool</h2>
+  <div id="result" style="margin-top: 20px;"></div>
 
-<input id="mobile" placeholder="Enter Mobile Number">
-<button onclick="searchCustomer()">Search</button>
+  <script>
+    const SCRIPT_URL = "https://script.google.com/a/macros/voltmoney.in/s/AKfycbzCaLi4ZzKiE9w7sscUpAe29Uq8aeqkW8P2zPMIXCAsjByE8jkBf5gxoqi7gukxd8Xv5w/exec";
 
-<div id="result"></div>
+    async function searchCustomer() {
+      const mobile = document.getElementById("mobile").value.trim();
+      const resultDiv = document.getElementById("result");
 
-<script>
+      resultDiv.innerHTML = "Loading...";
 
-const data = [
- {mobile:"9876543210", interest:"230", shortfall:"120", bounce:"3", reason:"Insufficient Funds"}
-];
+      try {
+        const response = await fetch(`${SCRIPT_URL}?mobile=${encodeURIComponent(mobile)}`);
+        const data = await response.json();
 
-async function searchCustomer(){
-
-let mobile = document.getElementById("mobile").value;
-
-let response = await fetch("https://script.google.com/macros/s/AKfycbwkLhcV-b66wElDgabuDSupUod1SonbiRqCySCHJdJ6Y98ph2VtMBhwOX9wAKufrcyS/exec?mobile="+mobile);
-
-let data = await response.json();
-
-if(data.error){
-document.getElementById("result").innerHTML = "Customer not found";
-return;
-}
-
-document.getElementById("result").innerHTML =
-"Interest: ₹"+data.interest+"<br>"+
-"Shortfall: ₹"+data.shortfall+"<br>"+
-"Bounce Count: "+data.bounce+"<br>"+
-"Reason: "+data.reason;
-
-}
-
-let mobile = document.getElementById("mobile").value;
-
-let customer = data.find(c => c.mobile === mobile);
-
-if(customer){
-
-document.getElementById("result").innerHTML =
-"Interest: ₹"+customer.interest+"<br>"+
-"Shortfall: ₹"+customer.shortfall+"<br>"+
-"Bounce Count: "+customer.bounce+"<br>"+
-"Reason: "+customer.reason;
-
-}
-else{
-
-document.getElementById("result").innerHTML="Customer not found";
-
-}
-
-}
-
-</script>
-
+        if (data.found) {
+          resultDiv.innerHTML = `
+            <p><strong>Mobile:</strong> ${data.mobile}</p>
+            <p><strong>Name:</strong> ${data.account_holder_name}</p>
+            <p><strong>Shortfall Amount:</strong> ${data.shortfall_amount}</p>
+          `;
+        } else {
+          resultDiv.innerHTML = "Customer not found";
+        }
+      } catch (error) {
+        resultDiv.innerHTML = "Error fetching customer details";
+      }
+    }
+  </script>
 </body>
 </html>
