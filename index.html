@@ -17,32 +17,4 @@
 
     async function searchCustomer() {
       const mobile = document.getElementById("mobile").value.trim();
-      const resultDiv = document.getElementById("result");
-
-      resultDiv.innerHTML = "Loading...";
-
-      try {
-        const response = await fetch(`${SCRIPT_URL}?mobile=${encodeURIComponent(mobile)}`);
-        const text = await response.text();
-        console.log("RAW RESPONSE:", text);
-
-        const data = JSON.parse(text);
-        console.log("PARSED DATA:", data);
-
-        if (data.found) {
-          resultDiv.innerHTML = `
-            <p><strong>Mobile:</strong> ${data.mobile}</p>
-            <p><strong>Name:</strong> ${data.account_holder_name}</p>
-            <p><strong>Shortfall Amount:</strong> ${data.shortfall_amount}</p>
-          `;
-        } else {
-          resultDiv.innerHTML = "Customer not found";
-        }
-      } catch (error) {
-        console.error("FETCH ERROR:", error);
-        resultDiv.innerHTML = "Error fetching customer details";
-      }
-    }
-  </script>
-</body>
-</html>
+      const resultDiv =
