@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Customer Investigation Tool</title>
+</head>
+
+<body>
+
+<h2>Customer Investigation Tool</h2>
+
+<input id="mobile" placeholder="Enter Mobile Number">
+<button onclick="searchCustomer()">Search</button>
+
+<div id="result"></div>
+
+<script>
+
+const data = [
+ {mobile:"9876543210", interest:"230", shortfall:"120", bounce:"3", reason:"Insufficient Funds"}
+];
+
+function searchCustomer(){
+
+let mobile = document.getElementById("mobile").value;
+
+let customer = data.find(c => c.mobile === mobile);
+
+if(customer){
+
+document.getElementById("result").innerHTML =
+"Interest: ₹"+customer.interest+"<br>"+
+"Shortfall: ₹"+customer.shortfall+"<br>"+
+"Bounce Count: "+customer.bounce+"<br>"+
+"Reason: "+customer.reason;
+
+}
+else{
+
+document.getElementById("result").innerHTML="Customer not found";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
