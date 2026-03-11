@@ -19,7 +19,26 @@ const data = [
  {mobile:"9876543210", interest:"230", shortfall:"120", bounce:"3", reason:"Insufficient Funds"}
 ];
 
-function searchCustomer(){
+async function searchCustomer(){
+
+let mobile = document.getElementById("mobile").value;
+
+let response = await fetch("https://script.google.com/macros/s/AKfycbwkLhcV-b66wElDgabuDSupUod1SonbiRqCySCHJdJ6Y98ph2VtMBhwOX9wAKufrcyS/exec?mobile="+mobile);
+
+let data = await response.json();
+
+if(data.error){
+document.getElementById("result").innerHTML = "Customer not found";
+return;
+}
+
+document.getElementById("result").innerHTML =
+"Interest: ₹"+data.interest+"<br>"+
+"Shortfall: ₹"+data.shortfall+"<br>"+
+"Bounce Count: "+data.bounce+"<br>"+
+"Reason: "+data.reason;
+
+}
 
 let mobile = document.getElementById("mobile").value;
 
